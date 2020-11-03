@@ -71,11 +71,11 @@ export default {
   },
   created() {
     const formInfo = this.getFromLocalStorage();
-    if (formInfo !== undefined) {
+    if (formInfo !== null) {
       this.data = formInfo;
+      const temp = formInfo.birthday.split('/');
+      this.birthday = `${temp[2]}-${temp[1]}-${temp[0]}`;
     }
-    const temp = formInfo.birthday.split('/');
-    this.birthday = `${temp[2]}-${temp[1]}-${temp[0]}`;
   },
   watch: {
     birthday(nVal) {
