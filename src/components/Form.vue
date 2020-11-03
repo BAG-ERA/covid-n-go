@@ -1,30 +1,52 @@
 <template>
   <div>
-    <div class="form-style-8">
-      <input type="text" v-model="data.firstname" name="firstname" placeholder="Prenom" />
-      <input type="text" v-model="data.lastname" name="lastname" placeholder="Nom de famille" />
-      <input
-        type="date"
-        v-model="birthday"
-        name="birthday"
-        placeholder="Date de naissance"/>
-      <input
-        type="text"
-        v-model="data.placeofbirth"
-        name="placeofbirth"
-        placeholder="Lieu de naissance" />
-      <input type="text" v-model="data.address" name="address" placeholder="Adresse" />
-      <input type="number" v-model="data.zipcode" name="zipcode" placeholder="Code postal" />
-      <input type="text" v-model="data.city" name="city" placeholder="Ville" />
-      <div class="motif-section">
-        <label for="motif">Motif</label>
-        <select name="motif" id="motif" v-model="motif">
-          <option v-for="i in motifList" :key="i" :value="i">{{ i }}</option>
-        </select>
+    <div
+      v-if="generatingPDF"
+      class="generating-message">
+      <p>Generating attestation</p>
+      <p class="emoji-me">⏱️</p>
+    </div>
+    <div v-else>
+      <div class="form-style-8">
+        <label for="firstname">Prenom</label>
+        <input type="text" v-model="data.firstname" name="firstname" placeholder="" />
+        <label for="lastname">Nom de famille</label>
+        <input type="text" v-model="data.lastname" name="lastname" placeholder="" />
+        <label for="birthday">Date de naissance</label>
+        <input
+          type="date"
+          v-model="birthday"
+          name="birthday"
+          placeholder=""/>
+        <label for="placeofbirth">Lieu de naissance</label>
+        <input
+          type="text"
+          v-model="data.placeofbirth"
+          name="placeofbirth"
+          placeholder="" />
+        <label for="address">Adresse</label>
+        <input type="text" v-model="data.address" name="address" placeholder="" />
+        <label for="zipcode">Code postal</label>
+        <input type="number" v-model="data.zipcode" name="zipcode" placeholder="" />
+        <label for="city">Ville</label>
+        <input type="text" v-model="data.city" name="city" placeholder="" />
+        <div class="motif-section">
+          <label for="motif">Motif</label>
+          <select name="motif" id="motif" v-model="motif">
+            <option v-for="i in motifList" :key="i" :value="i">{{ i }}</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="action-btn">
+        <input
+          class="generate-btn"
+          :class="{'disabled-btn': !formIsValid}"
+          type="button" @click="generatePdfCall"
+          value="GENERATE"
+          :disabled="!formIsValid">
       </div>
     </div>
-
-    <input class="generate-btn" type="button" @click="generatePdfCall" value="GENERATE">
     <a hidden ref="dw" :download="name" :href='url'>link</a>
   </div>
 </template>
@@ -38,6 +60,8 @@ export default {
   name: 'Form',
   data() {
     return {
+      formIsValid: false,
+      generatingPDF: false,
       url: '',
       name: 'init',
       birthday: '',
@@ -75,6 +99,7 @@ export default {
       this.data = formInfo;
       const temp = formInfo.birthday.split('/');
       this.birthday = `${temp[2]}-${temp[1]}-${temp[0]}`;
+      this.formIsValid = this.validateForm();
     }
   },
   watch: {
@@ -82,9 +107,16 @@ export default {
       const temp = nVal.split('-');
       this.data.birthday = `${temp[2]}/${temp[1]}/${temp[0]}`;
     },
+    data: {
+      deep: true,
+      handler() {
+        this.formIsValid = this.validateForm();
+      },
+    },
   },
   methods: {
     async generatePdfCall() {
+      this.generatingPDF = true;
       this.setToLocalStorage();
       const now = new Date();
       const month = (`0${(now.getMonth() + 1).toString()}`).slice(-2);
@@ -95,7 +127,10 @@ export default {
       this.name = `attestation_${date}.pdf`;
       const data = await generatePdf(this.data, this.motif, pdfBase);
       this.url = window.URL.createObjectURL(data);
-      setTimeout(() => { this.$refs.dw.click(); }, 1000);
+      setTimeout(() => {
+        this.$refs.dw.click();
+        this.generatingPDF = false;
+      }, 1000);
     },
     setToLocalStorage() {
       localStorage.setItem('attestationInfo', JSON.stringify(this.data));
@@ -103,11 +138,19 @@ export default {
     getFromLocalStorage() {
       return JSON.parse(localStorage.getItem('attestationInfo'));
     },
+    validateForm() {
+      let isValid = true;
+      const copyForm = { ...this.data };
+      delete copyForm.datesortie;
+      delete copyForm.heuresortie;
+      const f = Object.values(copyForm);
+      isValid = !f.includes('');
+      return isValid;
+    },
   },
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 h3 {
   margin: 40px 0 0;
@@ -125,18 +168,49 @@ a {
 }
 label {
   text-align: left;
+  font-size: 0.8em;
+  opacity: 0.6;
+  margin-left: 6px;
+  letter-spacing: 0.1em;
 }
 
 .motif-section {
   margin-top: 12px;
 }
 
+.action-btn {
+  display: flex;
+  justify-content: center;
+}
+
 .generate-btn {
-  padding: 12px;
+  padding: 24px;
+  width: 100%;
   background-color: #00be56;
   color: #FFFFFF;
   border: none;
   border-radius: 6px;
+  text-align: center;
+  letter-spacing: 0.2em;
+  margin-top: 2em;
+  font-size: 1em;
+}
+
+.disabled-btn {
+  background-color: lightgrey;
+}
+
+.generating-message {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.emoji-me {
+  font-size: 3em;
 }
 /**
  * CUSTOM FORM STYLE
@@ -187,8 +261,8 @@ label {
   border-bottom: 1px solid #ddd;
   background: transparent;
   margin-bottom: 10px;
-  font: 16px Arial, Helvetica, sans-serif;
-  height: 45px;
+  font: 1em Arial, Helvetica, sans-serif;
+  /* height: 45px; */
 }
 
 .form-style-8 textarea{
