@@ -18,8 +18,8 @@
       <input type="text" v-model="data.city" name="city" placeholder="Ville" />
       <div class="motif-section">
         <label for="motif">Motif</label>
-        <select name="motif" id="motif">
-          <option v-for="i in motifList" :key="i" value="i">{{ i }}</option>
+        <select name="motif" id="motif" v-model="motif">
+          <option v-for="i in motifList" :key="i" :value="i">{{ i }}</option>
         </select>
       </div>
     </div>
@@ -41,6 +41,7 @@ export default {
       url: '',
       name: 'init',
       birthday: '',
+      motif: '',
       data: {
         firstname: '',
         lastname: '',
@@ -54,7 +55,14 @@ export default {
       },
       motifList: [
         'travail',
-        'doc',
+        'achats',
+        'sante',
+        'famille',
+        'handicap',
+        'sport_animaux',
+        'convocation',
+        'missions',
+        'enfants',
       ],
     };
   },
@@ -66,6 +74,8 @@ export default {
     if (formInfo !== undefined) {
       this.data = formInfo;
     }
+    const temp = formInfo.birthday.split('/');
+    this.birthday = `${temp[2]}-${temp[1]}-${temp[0]}`;
   },
   watch: {
     birthday(nVal) {
@@ -83,7 +93,7 @@ export default {
       this.data.heuresortie = `${`${now.getHours()}`}:${minutes}`;
       const date = (now).toISOString();
       this.name = `attestation_${date}.pdf`;
-      const data = await generatePdf(this.data, 'travail', pdfBase);
+      const data = await generatePdf(this.data, this.motif, pdfBase);
       this.url = window.URL.createObjectURL(data);
       setTimeout(() => { this.$refs.dw.click(); }, 1000);
     },
