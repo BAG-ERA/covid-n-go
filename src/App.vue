@@ -4,6 +4,9 @@
       <!-- <router-link to="/">Home</router-link> -->
     </div>
     <router-view/>
+    <div class="version-number">
+      v0.1
+    </div>
   </div>
 </template>
 
@@ -27,5 +30,13 @@
 
 #nav a.router-link-exact-active {
   color: #42b983;
+}
+
+.version-number {
+  position: fixed;
+  bottom: 0px;
+  right: 6px;
+  font-size: 9px;
+  color: grey;
 }
 </style>
