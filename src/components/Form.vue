@@ -41,7 +41,7 @@ export default {
       url: '',
       name: 'init',
       birthday: '',
-      motif: '',
+      motif: 'travail',
       data: {
         firstname: '',
         lastname: '',
