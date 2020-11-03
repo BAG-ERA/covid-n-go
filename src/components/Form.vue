@@ -186,7 +186,7 @@ label {
 .generate-btn {
   padding: 24px;
   width: 100%;
-  background-color: #00be56;
+  background-color: #25e77d;
   color: #FFFFFF;
   border: none;
   border-radius: 6px;

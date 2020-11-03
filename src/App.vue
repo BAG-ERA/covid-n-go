@@ -5,20 +5,21 @@
     </div>
     <router-view/>
     <div class="version-number">
-      v0.1
+      v0.2
     </div>
   </div>
 </template>
 
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   /* text-align: center; */
-  color: #2c3e50;
+  /* color: #2c3e50; */
   max-width: 600px;
   margin: auto;
+  font-size: 14px;
 }
 
 #nav {
