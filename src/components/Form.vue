@@ -1,72 +1,48 @@
 <template>
   <div>
-    <div>
-      <div class="form-style-8">
-        <label for="firstname">Prenom</label>
-        <input type="text" v-model="data.firstname" name="firstname" placeholder="" />
-        <label for="lastname">Nom de famille</label>
-        <input type="text" v-model="data.lastname" name="lastname" placeholder="" />
-        <label for="birthday">Date de naissance</label>
-        <input
-          type="date"
-          v-model="birthday"
-          name="birthday"
-          placeholder=""/>
-        <label for="placeofbirth">Lieu de naissance</label>
-        <input
-          type="text"
-          v-model="data.placeofbirth"
-          name="placeofbirth"
-          placeholder="" />
-        <label for="address">Adresse</label>
-        <input type="text" v-model="data.address" name="address" placeholder="" />
-        <label for="zipcode">Code postal</label>
-        <input type="number" v-model="data.zipcode" name="zipcode" placeholder="" />
-        <label for="city">Ville</label>
-        <input type="text" v-model="data.city" name="city" placeholder="" />
-        <div class="motif-section">
-          <label for="motif">Motif</label>
-          <select name="motif" id="motif" v-model="motif">
-            <option v-for="i in motifList" :key="i" :value="i">{{ i }}</option>
-          </select>
-        </div>
-      </div>
-      <div class="action-btn">
-        <input
-          class="form-save-btn"
-          :class="{'disabled-btn': !formIsValid}"
-          type="button" @click="generateQRCode"
-          value="GÉNÉRER"
-          :disabled="!formIsValid">
-      </div>
-      <div v-if="generatedQR" class="action-btn">
-        <img :src="generatedQR">
-        <span>{{ QRData[0] }}</span>
-      </div>
+    <div class="form-style-8">
+      <label for="firstname">Prenom</label>
+      <input type="text" v-model="data.firstname" name="firstname" placeholder="" />
+      <label for="lastname">Nom de famille</label>
+      <input type="text" v-model="data.lastname" name="lastname" placeholder="" />
+      <label for="birthday">Date de naissance</label>
+      <input
+        type="date"
+        v-model="birthday"
+        name="birthday"
+        placeholder=""/>
+      <label for="placeofbirth">Lieu de naissance</label>
+      <input
+        type="text"
+        v-model="data.placeofbirth"
+        name="placeofbirth"
+        placeholder="" />
+      <label for="address">Adresse</label>
+      <input type="text" v-model="data.address" name="address" placeholder="" />
+      <label for="zipcode">Code postal</label>
+      <input type="number" v-model="data.zipcode" name="zipcode" placeholder="" />
+      <label for="city">Ville</label>
+      <input type="text" v-model="data.city" name="city" placeholder="" />
     </div>
-    <a @click="generatePdfCall">Ouvrir le pdf</a>
-    <a hidden ref="dw" :href='url' target="_self"></a>
+
+    <div class="action-btn">
+      <input
+        class="form-save-btn"
+        :class="{'disabled-btn': !formIsValid}"
+        type="button" @click="saveUserInfo"
+        value="SAUVEGARDER"
+        :disabled="!formIsValid">
+    </div>
   </div>
 </template>
 
 <script>
-// eslint-disable-next-line import/named
-import pdfBase from '@/assets/certificate.pdf';
-import generatePdf from '../mixins/pdf-utils';
-import generateQR from '../mixins/util';
-
 export default {
   name: 'Form',
   data() {
     return {
       formIsValid: false,
-      generatingPDF: false,
-      url: '',
-      generatedQR: null,
-      QRData: null,
-      name: 'attestation.pdf',
       birthday: '',
-      motif: 'travail',
       data: {
         firstname: '',
         lastname: '',
@@ -78,29 +54,9 @@ export default {
         datesortie: '',
         heuresortie: '',
       },
-      motifList: [
-        'travail',
-        'achats',
-        'sante',
-        'famille',
-        'handicap',
-        'sport_animaux',
-        'convocation',
-        'missions',
-        'enfants',
-      ],
     };
   },
-  props: {
-    msg: String,
-  },
   created() {
-    const currentAtt = JSON.parse(localStorage.getItem('currentAttestation'));
-    if (currentAtt) {
-      this.generatedQR = currentAtt.QRCode;
-      this.QRData = currentAtt.data;
-      this.motif = currentAtt.motif;
-    }
     const formInfo = this.getFromLocalStorage();
     if (formInfo !== null) {
       this.data = formInfo;
@@ -122,40 +78,9 @@ export default {
     },
   },
   methods: {
-    async generateQRCode() {
-      const creationInstant = new Date();
-      const creationDate = creationInstant.toLocaleDateString('fr-FR');
-      const creationHour = creationInstant
-        .toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }).replace(':', 'h');
-      this.data.datesortie = creationDate;
-      this.data.heuresortie = creationHour;
-      this.setToLocalStorage();
-      const data = [
-        `Cree le: ${creationDate} a ${creationHour}`,
-        `Nom: ${this.data.lastname}`,
-        `Prenom: ${this.data.firstname}`,
-        `Naissance: ${this.data.birthday} a ${this.data.placeofbirth}`,
-        `Adresse: ${this.data.address} ${this.data.zipcode} ${this.data.city}`,
-        `Sortie: ${this.data.datesortie} a ${this.data.heuresortie}`,
-        `Motifs: ${this.motif}`,
-      ].join(';\n ');
-      this.QRData = data;
-      this.generatedQR = await generateQR(data);
-      localStorage.setItem('currentAttestation', JSON.stringify({
-        QRCode: this.generatedQR,
-        data,
-        motif: this.motif,
-      }));
-    },
-    async generatePdfCall() {
-      this.generatingPDF = true;
-      const data = await generatePdf(this.data, this.motif, pdfBase, this.generatedQR, this.QRData);
-      this.url = window.URL.createObjectURL(data);
-      this.generatingPDF = false;
-      this.$refs.dw.click();
-    },
-    setToLocalStorage() {
+    saveUserInfo() {
       localStorage.setItem('attestationInfo', JSON.stringify(this.data));
+      this.$router.push('Generate');
     },
     getFromLocalStorage() {
       return JSON.parse(localStorage.getItem('attestationInfo'));
@@ -174,20 +99,6 @@ export default {
 </script>
 
 <style scoped>
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
 label {
   text-align: left;
   font-size: 0.8em;
@@ -196,39 +107,36 @@ label {
   letter-spacing: 0.1em;
 }
 
-.motif-section {
-  margin-top: 12px;
-}
-
 .disabled-btn {
   background-color: lightgrey;
 }
 
-.generating-message {
-  width: 100%;
-  height: 100vh;
+.action-btn {
   display: flex;
-  flex-direction: column;
   justify-content: center;
-  align-items: center;
 }
 
-.emoji-me {
-  font-size: 3em;
+.form-save-btn {
+  padding: 24px;
+  width: 100%;
+  background-color: var(--color-1);
+  color: var(--color-2);
+  border: none;
+  border-radius: 6px;
+  text-align: center;
+  letter-spacing: 0.2em;
+  margin-top: 2em;
+  font-size: 1em;
 }
+
 /**
  * CUSTOM FORM STYLE
  * from : https://www.sanwebe.com/2014/08/css-html-forms-designs
  */
 .form-style-8{
-  font-family: 'Open Sans Condensed', arial, sans;
+  /* font-family: 'Open Sans Condensed', arial, sans; */
   width: 100%;
-  /* padding: 30px; */
   background: #FFFFFF;
-  /* margin: 12px auto; */
-  /* box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.22);
-  -moz-box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.22);
-  -webkit-box-shadow:  0px 0px 15px rgba(0, 0, 0, 0.22); */
 }
 
 .form-style-8 h2{

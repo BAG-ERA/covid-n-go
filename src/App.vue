@@ -6,7 +6,7 @@
     </div>
     <router-view/>
     <div class="version-number">
-      v0.2
+      v0.3
     </div>
   </div>
 </template>
@@ -20,23 +20,35 @@ export default {
   components: {
     NavigationBar,
   },
+  created() {
+    // -- Redirect user according to the info done
+    const userInfo = JSON.parse(localStorage.getItem('attestationInfo'));
+    const currentAttestation = JSON.parse(localStorage.getItem('currentAttestation'));
+    if (userInfo !== null && currentAttestation !== null) {
+      this.$router.push('Attestation');
+    } else if (userInfo !== null && currentAttestation === null) {
+      this.$router.push('Generate');
+    }
+  },
 };
 </script>
 
 <style>
+:root {
+  --color-1: #25e77d;
+  --color-2: #ffffff;
+}
+
 #app {
   font-family: Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* text-align: center; */
-  /* color: #2c3e50; */
   max-width: 600px;
   margin: auto;
   font-size: 14px;
 }
 
 #nav {
-  /* padding: 30px; */
   position: absolute;
   bottom: 0;
   width: 100%;
