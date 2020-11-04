@@ -1,11 +1,17 @@
 <template>
   <div>
-    <h1>Generate</h1>
+    <h1>Selectionnez un motif</h1>
     <div class="motif-section">
-      <label for="motif">Motif</label>
-      <select name="motif" id="motif" v-model="motif">
-        <option v-for="i in motifList" :key="i" :value="i">{{ i }}</option>
-      </select>
+      <div class="icon-row"
+        :class="{ 'active': isActive[reason.name] }"
+        @click="selectMotive(reason)"
+        v-for="reason in reasons"
+        :key="reason.name">
+        <div class="icon-container">
+          <img :src="require('../assets/' + reason.icon)" width="80px" alt="">
+        </div>
+        <div class="description-container">{{ reason.description }}</div>
+      </div>
     </div>
     <div class="action-btn">
       <input
@@ -19,15 +25,28 @@
 <script>
 import getFromLocalStorage from '@/mixins/storage';
 import generateQR from '../mixins/util';
+import reasons from '../data/reasons';
 
 export default {
   name: 'Generate',
   mixins: [getFromLocalStorage],
   data() {
     return {
+      reasons,
       generatedQR: null,
       QRData: null,
       motif: 'travail',
+      isActive: {
+        travail: false,
+        achats: false,
+        sante: false,
+        famille: false,
+        handicap: false,
+        sport_animaux: false,
+        convocation: false,
+        missions: false,
+        enfants: false,
+      },
       data: {
         firstname: '',
         lastname: '',
@@ -65,7 +84,21 @@ export default {
     }
   },
   methods: {
+    selectMotive(reason) {
+      if (this.isActive[reason.name]) {
+        // eslint-disable-next-line no-bitwise
+        this.isActive[reason.name] = false;
+      } else {
+        this.isActive[reason.name] = true;
+      }
+    },
     async generateQRCode() {
+      this.motif = [];
+      this.reasons.forEach((reason) => {
+        if (this.isActive[reason.name]) {
+          this.motif.push(reason.name);
+        }
+      });
       const creationInstant = new Date();
       const creationDate = creationInstant.toLocaleDateString('fr-FR');
       const creationHour = creationInstant
@@ -79,7 +112,7 @@ export default {
         `Naissance: ${this.data.birthday} a ${this.data.placeofbirth}`,
         `Adresse: ${this.data.address} ${this.data.zipcode} ${this.data.city}`,
         `Sortie: ${this.data.datesortie} a ${this.data.heuresortie}`,
-        `Motifs: ${this.motif}`,
+        `Motifs: ${this.motif.toString()}`,
       ].join(';\n ');
       this.QRData = data;
       this.generatedQR = await generateQR(data);
@@ -88,6 +121,7 @@ export default {
         data,
         motif: this.motif,
       }));
+      this.$router.push('Attestation');
     },
   },
 };
@@ -97,6 +131,32 @@ export default {
 .action-btn {
   display: flex;
   justify-content: center;
+}
+
+.icon-row {
+  display: flex;
+  margin: 0.3em;
+  background: #ffffff;
+  cursor: pointer;
+}
+.active{
+  background:#0000000A;
+}
+
+.icon-container{
+  font-size: 0.6em;
+  display: flex;
+  align-items: center;
+  flex: 20%;
+  flex-direction:row
+}
+
+.description-container {
+  font-size: 0.6em;
+  display: flex;
+  flex: 85%;
+  align-items: center;
+  flex-direction:row
 }
 
 .generate-btn {
