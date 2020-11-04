@@ -29,7 +29,7 @@
       <input
         class="form-save-btn"
         :class="{'disabled-btn': !formIsValid}"
-        type="button" @click="setToLocalStorage"
+        type="button" @click="saveUserInfo"
         value="SAUVEGARDER"
         :disabled="!formIsValid">
     </div>
@@ -78,8 +78,9 @@ export default {
     },
   },
   methods: {
-    setToLocalStorage() {
+    saveUserInfo() {
       localStorage.setItem('attestationInfo', JSON.stringify(this.data));
+      this.$router.push('Generate');
     },
     getFromLocalStorage() {
       return JSON.parse(localStorage.getItem('attestationInfo'));
@@ -110,18 +111,24 @@ label {
   background-color: lightgrey;
 }
 
-.generating-message {
-  width: 100%;
-  height: 100vh;
+.action-btn {
   display: flex;
-  flex-direction: column;
   justify-content: center;
-  align-items: center;
 }
 
-.emoji-me {
-  font-size: 3em;
+.form-save-btn {
+  padding: 24px;
+  width: 100%;
+  background-color: var(--color-1);
+  color: var(--color-2);
+  border: none;
+  border-radius: 6px;
+  text-align: center;
+  letter-spacing: 0.2em;
+  margin-top: 2em;
+  font-size: 1em;
 }
+
 /**
  * CUSTOM FORM STYLE
  * from : https://www.sanwebe.com/2014/08/css-html-forms-designs
