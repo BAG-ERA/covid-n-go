@@ -3,7 +3,7 @@
     <h1>My attestation</h1>
     <div v-if="generatedQR" class="action-btn">
       <img :src="generatedQR">
-      <span>{{ QRData[0] }}</span>
+      <span>{{ QRInfo }}</span>
     </div>
     <a @click="generatePdfCall">Ouvrir le pdf</a>
     <a hidden ref="dw" :href='url' :download="name"></a>
@@ -37,6 +37,12 @@ export default {
         heuresortie: '',
       },
     };
+  },
+  computed: {
+    QRInfo() {
+      const tmp = this.QRData.split(';');
+      return `${tmp[0]} ${tmp[tmp.length - 1]}`;
+    },
   },
   created() {
     const currentAtt = JSON.parse(localStorage.getItem('currentAttestation'));
