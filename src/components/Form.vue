@@ -1,5 +1,6 @@
 <template>
   <div>
+    <div>
       <div class="form-style-8">
         <label for="firstname">Prenom</label>
         <input type="text" v-model="data.firstname" name="firstname" placeholder="" />
@@ -34,11 +35,17 @@
         <input
           class="form-save-btn"
           :class="{'disabled-btn': !formIsValid}"
-          type="button" @click="saveUserForm"
-          value="Sauvegarder"
+          type="button" @click="generateQRCode"
+          value="GÉNÉRER"
           :disabled="!formIsValid">
       </div>
-    <a hidden ref="dw" :download="name" :href='url'>link</a>
+      <div v-if="generatedQR" class="action-btn">
+        <img :src="generatedQR">
+        <span>{{ QRData[0] }}</span>
+      </div>
+    </div>
+    <a @click="generatePdfCall">Ouvrir le pdf</a>
+    <a hidden ref="dw" :href='url' target="_self"></a>
   </div>
 </template>
 
@@ -46,6 +53,7 @@
 // eslint-disable-next-line import/named
 import pdfBase from '@/assets/certificate.pdf';
 import generatePdf from '../mixins/pdf-utils';
+import generateQR from '../mixins/util';
 
 export default {
   name: 'Form',
@@ -54,7 +62,9 @@ export default {
       formIsValid: false,
       generatingPDF: false,
       url: '',
-      name: 'init',
+      generatedQR: null,
+      QRData: null,
+      name: 'attestation.pdf',
       birthday: '',
       motif: 'travail',
       data: {
@@ -85,6 +95,12 @@ export default {
     msg: String,
   },
   created() {
+    const currentAtt = JSON.parse(localStorage.getItem('currentAttestation'));
+    if (currentAtt) {
+      this.generatedQR = currentAtt.QRCode;
+      this.QRData = currentAtt.data;
+      this.motif = currentAtt.motif;
+    }
     const formInfo = this.getFromLocalStorage();
     if (formInfo !== null) {
       this.data = formInfo;
@@ -106,23 +122,37 @@ export default {
     },
   },
   methods: {
-    saveUserForm() {
+    async generateQRCode() {
+      const creationInstant = new Date();
+      const creationDate = creationInstant.toLocaleDateString('fr-FR');
+      const creationHour = creationInstant
+        .toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }).replace(':', 'h');
+      this.data.datesortie = creationDate;
+      this.data.heuresortie = creationHour;
       this.setToLocalStorage();
+      const data = [
+        `Cree le: ${creationDate} a ${creationHour}`,
+        `Nom: ${this.data.lastname}`,
+        `Prenom: ${this.data.firstname}`,
+        `Naissance: ${this.data.birthday} a ${this.data.placeofbirth}`,
+        `Adresse: ${this.data.address} ${this.data.zipcode} ${this.data.city}`,
+        `Sortie: ${this.data.datesortie} a ${this.data.heuresortie}`,
+        `Motifs: ${this.motif}`,
+      ].join(';\n ');
+      this.QRData = data;
+      this.generatedQR = await generateQR(data);
+      localStorage.setItem('currentAttestation', JSON.stringify({
+        QRCode: this.generatedQR,
+        data,
+        motif: this.motif,
+      }));
     },
     async generatePdfCall() {
       this.generatingPDF = true;
-      const now = new Date();
-      const month = (`0${(now.getMonth() + 1).toString()}`).slice(-2);
-      const minutes = (`0${now.getMinutes().toString()}`).slice(-2);
-      this.data.datesortie = `${now.getDate()}/${month}/${now.getFullYear()}`;
-      this.data.heuresortie = `${`${now.getHours()}`}:${minutes}`;
-      const date = (now).toISOString();
-      this.name = `attestation_${date}.pdf`;
-      const data = await generatePdf(this.data, this.motif, pdfBase);
+      const data = await generatePdf(this.data, this.motif, pdfBase, this.generatedQR, this.QRData);
       this.url = window.URL.createObjectURL(data);
-      setTimeout(() => {
-        this.$refs.dw.click();
-      }, 1000);
+      this.generatingPDF = false;
+      this.$refs.dw.click();
     },
     setToLocalStorage() {
       localStorage.setItem('attestationInfo', JSON.stringify(this.data));
