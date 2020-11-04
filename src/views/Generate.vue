@@ -4,10 +4,8 @@
     <div class="action-btn">
       <input
         class="generate-btn"
-        :class="{'disabled-btn': !formIsValid}"
         type="button" @click="generatePdfCall"
-        value="GENERATE"
-        :disabled="!formIsValid">
+        value="GENERATE">
     </div>
   </div>
 </template>
