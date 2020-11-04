@@ -1,11 +1,17 @@
 <template>
   <div>
-    <h1>Generate</h1>
+    <h1>Selectionnez un motif</h1>
     <div class="motif-section">
-      <label for="motif">Motif</label>
-      <select name="motif" id="motif" v-model="motif">
-        <option v-for="i in motifList" :key="i" :value="i">{{ i }}</option>
-      </select>
+      <div class="icon-row"
+        :class="{ 'active': isActive[reason.name] }"
+        @click="selectMotive(reason)"
+        v-for="reason in reasons"
+        :key="reason.name">
+        <div class="icon-container">
+          <img :src="require('../assets/' + reason.icon)" width="50px" alt="">
+        </div>
+        <div class="description-container">{{ reason.description }}</div>
+      </div>
     </div>
     <div class="action-btn">
       <input
@@ -19,12 +25,15 @@
 <script>
 import getFromLocalStorage from '@/mixins/storage';
 import generateQR from '../mixins/util';
+import reasons from '../data/reasons';
 
 export default {
   name: 'Generate',
   mixins: [getFromLocalStorage],
   data() {
     return {
+      isActive: {},
+      reasons,
       generatedQR: null,
       QRData: null,
       motif: 'travail',
@@ -65,6 +74,15 @@ export default {
     }
   },
   methods: {
+    selectMotive(reason) {
+      if (this.isActive[reason.name]) {
+        // eslint-disable-next-line no-bitwise
+        this.isActive[reason.name] = false;
+      } else {
+        this.isActive[reason.name] = true;
+      }
+      this.motif = reason.name;
+    },
     async generateQRCode() {
       const creationInstant = new Date();
       const creationDate = creationInstant.toLocaleDateString('fr-FR');
@@ -97,6 +115,32 @@ export default {
 .action-btn {
   display: flex;
   justify-content: center;
+}
+
+.active{
+  background:#0000000A;
+}
+.icon-row {
+  display: flex;
+  margin: 0.3em;
+  background: #ffffff;
+  cursor: pointer;
+}
+
+.icon-container{
+  font-size: 0.6em;
+  display: flex;
+  align-items: center;
+  flex: 20%;
+  flex-direction:row
+}
+
+.description-container {
+  font-size: 0.6em;
+  display: flex;
+  flex: 75%;
+  align-items: center;
+  flex-direction:row
 }
 
 .generate-btn {
