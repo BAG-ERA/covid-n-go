@@ -6,7 +6,7 @@
     </div>
     <router-view/>
     <div class="version-number">
-      v0.2
+      v0.3
     </div>
   </div>
 </template>
@@ -19,6 +19,15 @@ export default {
   name: 'Home',
   components: {
     NavigationBar,
+  },
+  created() {
+    const userInfo = JSON.parse(localStorage.getItem('attestationInfo'));
+    const currentAttestation = JSON.parse(localStorage.getItem('currentAttestation'));
+    if (userInfo !== null && currentAttestation !== null) {
+      this.$router.push('Attestation');
+    } else if (userInfo !== null && currentAttestation === null) {
+      this.$router.push('Generate');
+    }
   },
 };
 </script>
