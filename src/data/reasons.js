@@ -34,11 +34,11 @@ const reasons = [
     la promenade avec les seules personnes regroupées dans un même domicile, soit aux besoins des animaux \
     de compagnie.',
   }, {
-    icon: 'drink.svg',
+    icon: 'legal.svg',
     name: 'convocation',
     description: 'Convocation judiciaire ou administrative et pour se rendre dans un service public',
   }, {
-    icon: 'drink.svg',
+    icon: 'tig.svg',
     name: 'missions',
     description: 'Participation à des missions d\'intérêt général sur demande de l\'autorité administrative',
   }, {

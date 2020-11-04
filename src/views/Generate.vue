@@ -152,7 +152,7 @@ export default {
 }
 
 .description-container {
-  font-size: 0.6em;
+  font-size: 0.8em;
   display: flex;
   flex: 85%;
   align-items: center;
