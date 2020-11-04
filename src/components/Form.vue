@@ -1,12 +1,6 @@
 <template>
   <div>
-    <div
-      v-if="generatingPDF"
-      class="generating-message">
-      <p>Generating attestation</p>
-      <p class="emoji-me">⏱️</p>
-    </div>
-    <div v-else>
+    <div>
       <div class="form-style-8">
         <label for="firstname">Prenom</label>
         <input type="text" v-model="data.firstname" name="firstname" placeholder="" />
@@ -37,10 +31,9 @@
           </select>
         </div>
       </div>
-
       <div class="action-btn">
         <input
-          class="generate-btn"
+          class="form-save-btn"
           :class="{'disabled-btn': !formIsValid}"
           type="button" @click="generateQRCode"
           value="GÉNÉRER"
@@ -205,24 +198,6 @@ label {
 
 .motif-section {
   margin-top: 12px;
-}
-
-.action-btn {
-  display: flex;
-  justify-content: center;
-}
-
-.generate-btn {
-  padding: 24px;
-  width: 100%;
-  background-color: #00be56;
-  color: #FFFFFF;
-  border: none;
-  border-radius: 6px;
-  text-align: center;
-  letter-spacing: 0.2em;
-  margin-top: 2em;
-  font-size: 1em;
 }
 
 .disabled-btn {
