@@ -1,6 +1,5 @@
 /* eslint-disable no-alert */
 import { PDFDocument, StandardFonts } from 'pdf-lib';
-import generateQR from './util';
 
 const ys = {
   travail: 578,
@@ -26,13 +25,7 @@ function getIdealFontSize(font, text, maxWidth, minSize, defaultSize) {
   return textWidth > maxWidth ? null : currentSize;
 }
 
-async function generatePdf(profile, reasons, pdfBase) {
-  const creationInstant = new Date();
-  const creationDate = creationInstant.toLocaleDateString('fr-FR');
-  const creationHour = creationInstant
-    .toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })
-    .replace(':', 'h');
-
+async function generatePdf(profile, reasons, pdfBase, qrcode, qrdata) {
   const {
     lastname,
     firstname,
@@ -44,16 +37,6 @@ async function generatePdf(profile, reasons, pdfBase) {
     datesortie,
     heuresortie,
   } = profile;
-
-  const data = [
-    `Cree le: ${creationDate} a ${creationHour}`,
-    `Nom: ${lastname}`,
-    `Prenom: ${firstname}`,
-    `Naissance: ${birthday} a ${placeofbirth}`,
-    `Adresse: ${address} ${zipcode} ${city}`,
-    `Sortie: ${datesortie} a ${heuresortie}`,
-    `Motifs: ${reasons}`,
-  ].join(';\n ');
 
   const existingPdfBytes = await fetch(pdfBase).then((res) => res.arrayBuffer());
 
@@ -94,7 +77,7 @@ async function generatePdf(profile, reasons, pdfBase) {
       drawText('x', 78, ys[reason], 18);
     });
 
-  let locationSize = getIdealFontSize(font, profile.city, 83, 7, 11);
+  let locationSize = getIdealFontSize(font, city, 83, 7, 11);
 
   if (!locationSize) {
     alert(
@@ -104,22 +87,14 @@ async function generatePdf(profile, reasons, pdfBase) {
     locationSize = 7;
   }
 
-  drawText(profile.city, 105, 177, locationSize);
-  drawText(`${profile.datesortie}`, 91, 153, 11);
-  drawText(`${profile.heuresortie}`, 264, 153, 11);
-
-  // const shortCreationDate = `${creationDate.split('/')[0]}/${
-  //   creationDate.split('/')[1]
-  // }`;
-  // drawText(shortCreationDate, 400, 177, 8);
+  drawText(city, 105, 177, locationSize);
+  drawText(`${datesortie}`, 91, 153, 11);
+  drawText(`${heuresortie}`, 264, 153, 11);
 
   // Date création
   drawText('Date de création:', 479, 120, 6);
-  drawText(`${creationDate} à ${creationHour}`, 470, 124, 6);
-  const generatedQR = await generateQR(data);
-
-  const qrImage = await pdfDoc.embedPng(generatedQR);
-
+  drawText(qrdata[0], 470, 124, 6);
+  const qrImage = await pdfDoc.embedPng(qrcode);
   page1.drawImage(qrImage, {
     x: page1.getWidth() - 156,
     y: 100,
