@@ -8,7 +8,7 @@
         v-for="reason in reasons"
         :key="reason.name">
         <div class="icon-container">
-          <img :src="require('../assets/' + reason.icon)" width="50px" alt="">
+          <img :src="require('../assets/' + reason.icon)" width="80px" alt="">
         </div>
         <div class="description-container">{{ reason.description }}</div>
       </div>
@@ -154,7 +154,7 @@ export default {
 .description-container {
   font-size: 0.6em;
   display: flex;
-  flex: 75%;
+  flex: 85%;
   align-items: center;
   flex-direction:row
 }
