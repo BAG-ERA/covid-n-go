@@ -24,7 +24,7 @@ export default {
       QRData: null,
       url: '',
       name: 'attestation.pdf',
-      motif: 'travail',
+      motif: [],
       data: {
         firstname: '',
         lastname: '',
