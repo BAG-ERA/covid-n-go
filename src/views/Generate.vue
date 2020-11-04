@@ -32,11 +32,21 @@ export default {
   mixins: [getFromLocalStorage],
   data() {
     return {
-      isActive: {},
       reasons,
       generatedQR: null,
       QRData: null,
       motif: 'travail',
+      isActive: {
+        travail: false,
+        achats: false,
+        sante: false,
+        famille: false,
+        handicap: false,
+        sport_animaux: false,
+        convocation: false,
+        missions: false,
+        enfants: false,
+      },
       data: {
         firstname: '',
         lastname: '',
@@ -81,9 +91,14 @@ export default {
       } else {
         this.isActive[reason.name] = true;
       }
-      this.motif = reason.name;
     },
     async generateQRCode() {
+      this.motif = [];
+      this.reasons.forEach((reason) => {
+        if (this.isActive[reason.name]) {
+          this.motif.push(reason.name);
+        }
+      });
       const creationInstant = new Date();
       const creationDate = creationInstant.toLocaleDateString('fr-FR');
       const creationHour = creationInstant
@@ -97,7 +112,7 @@ export default {
         `Naissance: ${this.data.birthday} a ${this.data.placeofbirth}`,
         `Adresse: ${this.data.address} ${this.data.zipcode} ${this.data.city}`,
         `Sortie: ${this.data.datesortie} a ${this.data.heuresortie}`,
-        `Motifs: ${this.motif}`,
+        `Motifs: ${this.motif.toString()}`,
       ].join(';\n ');
       this.QRData = data;
       this.generatedQR = await generateQR(data);
@@ -106,6 +121,7 @@ export default {
         data,
         motif: this.motif,
       }));
+      this.$router.push('Attestation');
     },
   },
 };
@@ -117,14 +133,14 @@ export default {
   justify-content: center;
 }
 
-.active{
-  background:#0000000A;
-}
 .icon-row {
   display: flex;
   margin: 0.3em;
   background: #ffffff;
   cursor: pointer;
+}
+.active{
+  background:#0000000A;
 }
 
 .icon-container{
