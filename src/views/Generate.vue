@@ -1,10 +1,16 @@
 <template>
   <div>
     <h1>Generate</h1>
+    <div class="motif-section">
+      <label for="motif">Motif</label>
+      <select name="motif" id="motif" v-model="motif">
+        <option v-for="i in motifList" :key="i" :value="i">{{ i }}</option>
+      </select>
+    </div>
     <div class="action-btn">
       <input
         class="generate-btn"
-        type="button" @click="generatePdfCall"
+        type="button" @click="generateQRCode"
         value="GENERATE">
     </div>
   </div>
@@ -12,22 +18,76 @@
 
 <script>
 import getFromLocalStorage from '@/mixins/storage';
+import generateQR from '../mixins/util';
 
 export default {
   name: 'Generate',
   mixins: [getFromLocalStorage],
   data() {
     return {
-      msg: 'Hi there!',
+      generatedQR: null,
+      QRData: null,
+      motif: 'travail',
+      data: {
+        firstname: '',
+        lastname: '',
+        birthday: '',
+        placeofbirth: '',
+        address: '',
+        zipcode: '',
+        city: '',
+        datesortie: '',
+        heuresortie: '',
+      },
+      motifList: [
+        'travail',
+        'achats',
+        'sante',
+        'famille',
+        'handicap',
+        'sport_animaux',
+        'convocation',
+        'missions',
+        'enfants',
+      ],
     };
   },
   created() {
+    const currentAtt = JSON.parse(localStorage.getItem('currentAttestation'));
+    if (currentAtt) {
+      this.generatedQR = currentAtt.QRCode;
+      this.QRData = currentAtt.data;
+      this.motif = currentAtt.motif;
+    }
     const formInfo = this.getFromLocalStorage();
-    console.log('formInfo: ', formInfo);
+    if (formInfo !== null) {
+      this.data = formInfo;
+    }
   },
   methods: {
-    generatePdfCall() {
-      console.log('Generate ...');
+    async generateQRCode() {
+      const creationInstant = new Date();
+      const creationDate = creationInstant.toLocaleDateString('fr-FR');
+      const creationHour = creationInstant
+        .toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }).replace(':', 'h');
+      this.data.datesortie = creationDate;
+      this.data.heuresortie = creationHour;
+      const data = [
+        `Cree le: ${creationDate} a ${creationHour}`,
+        `Nom: ${this.data.lastname}`,
+        `Prenom: ${this.data.firstname}`,
+        `Naissance: ${this.data.birthday} a ${this.data.placeofbirth}`,
+        `Adresse: ${this.data.address} ${this.data.zipcode} ${this.data.city}`,
+        `Sortie: ${this.data.datesortie} a ${this.data.heuresortie}`,
+        `Motifs: ${this.motif}`,
+      ].join(';\n ');
+      this.QRData = data;
+      this.generatedQR = await generateQR(data);
+      localStorage.setItem('currentAttestation', JSON.stringify({
+        QRCode: this.generatedQR,
+        data,
+        motif: this.motif,
+      }));
     },
   },
 };
