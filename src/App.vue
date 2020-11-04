@@ -2,6 +2,7 @@
   <div id="app">
     <div id="nav">
       <!-- <router-link to="/">Home</router-link> -->
+      <NavigationBar />
     </div>
     <router-view/>
     <div class="version-number">
@@ -9,6 +10,18 @@
     </div>
   </div>
 </template>
+
+<script>
+// @ is an alias to /src
+import NavigationBar from '@/components/NavigationBar.vue';
+
+export default {
+  name: 'Home',
+  components: {
+    NavigationBar,
+  },
+};
+</script>
 
 <style>
 #app {
@@ -24,15 +37,24 @@
 
 #nav {
   /* padding: 30px; */
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  max-width: 600px;
+  margin: auto;
 }
 
 #nav a {
   font-weight: bold;
-  color: #2c3e50;
+  color: #ffffff;
 }
 
 #nav a.router-link-exact-active {
-  color: #42b983;
+  color: #ffffff;
+}
+
+#nav div.router-link-exact-active {
+  opacity: 1;
 }
 
 .version-number {
@@ -41,5 +63,11 @@
   right: 6px;
   font-size: 9px;
   color: grey;
+}
+
+@media (max-width: 600px) {
+  #nav {
+    left: 0;
+  }
 }
 </style>

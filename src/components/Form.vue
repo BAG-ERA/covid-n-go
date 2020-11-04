@@ -1,12 +1,5 @@
 <template>
   <div>
-    <div
-      v-if="generatingPDF"
-      class="generating-message">
-      <p>Generating attestation</p>
-      <p class="emoji-me">⏱️</p>
-    </div>
-    <div v-else>
       <div class="form-style-8">
         <label for="firstname">Prenom</label>
         <input type="text" v-model="data.firstname" name="firstname" placeholder="" />
@@ -37,16 +30,14 @@
           </select>
         </div>
       </div>
-
       <div class="action-btn">
         <input
-          class="generate-btn"
+          class="form-save-btn"
           :class="{'disabled-btn': !formIsValid}"
-          type="button" @click="generatePdfCall"
-          value="GENERATE"
+          type="button" @click="saveUserForm"
+          value="Sauvegarder"
           :disabled="!formIsValid">
       </div>
-    </div>
     <a hidden ref="dw" :download="name" :href='url'>link</a>
   </div>
 </template>
@@ -115,9 +106,11 @@ export default {
     },
   },
   methods: {
+    saveUserForm() {
+      this.setToLocalStorage();
+    },
     async generatePdfCall() {
       this.generatingPDF = true;
-      this.setToLocalStorage();
       const now = new Date();
       const month = (`0${(now.getMonth() + 1).toString()}`).slice(-2);
       const minutes = (`0${now.getMinutes().toString()}`).slice(-2);
@@ -129,7 +122,6 @@ export default {
       this.url = window.URL.createObjectURL(data);
       setTimeout(() => {
         this.$refs.dw.click();
-        this.generatingPDF = false;
       }, 1000);
     },
     setToLocalStorage() {
@@ -176,24 +168,6 @@ label {
 
 .motif-section {
   margin-top: 12px;
-}
-
-.action-btn {
-  display: flex;
-  justify-content: center;
-}
-
-.generate-btn {
-  padding: 24px;
-  width: 100%;
-  background-color: #25e77d;
-  color: #FFFFFF;
-  border: none;
-  border-radius: 6px;
-  text-align: center;
-  letter-spacing: 0.2em;
-  margin-top: 2em;
-  font-size: 1em;
 }
 
 .disabled-btn {

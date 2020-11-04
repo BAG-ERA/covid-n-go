@@ -1,14 +1,26 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import Home from '../views/Home.vue';
+import Profile from '../views/Profile.vue';
+import Generate from '../views/Generate.vue';
+import MyAttestation from '../views/MyAttestation.vue';
 
 Vue.use(VueRouter);
 
 const routes = [
   {
     path: '/',
-    name: 'Home',
-    component: Home,
+    name: 'Profile',
+    component: Profile,
+  },
+  {
+    path: '/generate',
+    name: 'Generate',
+    component: Generate,
+  },
+  {
+    path: '/attestation',
+    name: 'Attestation',
+    component: MyAttestation,
   },
 ];
 
