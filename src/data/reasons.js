@@ -49,12 +49,12 @@ const reasons = [
     icon: 'tig.svg',
     name: 'missions',
     description: 'Participation à des missions d\'intérêt général sur demande de l\'autorité administrative',
-    shortdescription: 'Participation à des missions d\'intérêt général',
+    shortdescription: 'Participation à des missions d\'intérêt général.',
   }, {
     icon: 'child.svg',
     name: 'enfants',
     description: 'Déplacement pour chercher les enfants à l’école et à l’occasion de leurs activités périscolaires',
-    shortdescription: 'Chercher les enfants à l’école',
+    shortdescription: 'Chercher les enfants à l’école.',
   },
 ];
 

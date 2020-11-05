@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Selectionnez un motif</h1>
+    <h1>Vous voulez :</h1>
     <div class="motif-section">
       <div class="icon-row"
         :class="{ 'active': isActive[reason.name] }"
@@ -8,7 +8,7 @@
         v-for="reason in reasons"
         :key="reason.name">
         <div class="icon-container">
-          <img :src="require('../assets/' + reason.icon)" width="60px" alt="">
+          <img :src="require('../assets/' + reason.icon)" width="40em" alt="">
         </div>
         <div class="description-container">{{ reason.shortdescription }}</div>
       </div>
@@ -128,6 +128,9 @@ export default {
 </script>
 
 <style scoped>
+h1 {
+  font-size: 1.2em;
+}
 .action-btn {
   display: flex;
   justify-content: center;
@@ -138,22 +141,24 @@ export default {
   margin: 0.3em;
   background: #ffffff;
   cursor: pointer;
+  border: 1px solid;
+  border-color: #00000009;
 }
 .active{
-  background:#0000000A;
+  background:#00000013;
 }
 
 .icon-container{
   font-size: 0.6em;
   display: flex;
   align-items: center;
-  flex: 30%;
-  margin-left: 1em;
+  flex: 20%;
   flex-direction:row;
+  justify-content: center;
 }
 
 .description-container {
-  font-size: 1em;
+  font-size: 0.9em;
   display: flex;
   flex: 70%;
   align-items: center;
