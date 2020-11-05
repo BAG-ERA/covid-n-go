@@ -6,7 +6,7 @@
     </div>
     <router-view/>
     <div class="version-number">
-      v0.3
+      v0.4
     </div>
   </div>
 </template>
