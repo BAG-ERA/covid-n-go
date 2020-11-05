@@ -1,0 +1,10 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "app.silot.covid",
+    "sha256_cert_fingerprints": [
+      "A4:47:35:02:AB:4E:F2:E0:5C:AA:97:7B:82:A1:C3:97:5F:53:ED:7D:4B:E3:0C:95:8B:00:1D:64:BE:26:3F:32"
+    ]
+  }
+}]
