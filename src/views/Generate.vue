@@ -150,9 +150,6 @@ export default {
 </script>
 
 <style scoped>
-h1 {
-  font-size: 1.2em;
-}
 .action-btn {
   display: flex;
   justify-content: center;

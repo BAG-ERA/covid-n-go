@@ -39,6 +39,14 @@ export default {
   --color-2: #ffffff;
 }
 
+h1 {
+  font-size: 1.2em;
+}
+
+a {
+  text-decoration: none;
+}
+
 #app {
   font-family: Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
