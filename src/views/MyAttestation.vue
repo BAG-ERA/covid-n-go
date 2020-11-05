@@ -66,8 +66,8 @@ export default {
       this.generatingPDF = true;
       const data = await generatePdf(this.data, this.motif, pdfBase, this.generatedQR, this.QRData);
       this.url = window.URL.createObjectURL(data);
-      this.generatingPDF = false;
-      setTimeout(() => this.$refs.dw.click(), 200);
+      this.name = `attestation_${this.data.datesortie}-${this.data.heuresortie}.pdf`;
+      setTimeout(() => { this.$refs.dw.click(); this.generatingPDF = false; }, 200);
     },
   },
 };
