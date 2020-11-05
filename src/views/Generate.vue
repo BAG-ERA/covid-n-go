@@ -134,6 +134,7 @@ h1 {
 .action-btn {
   display: flex;
   justify-content: center;
+  margin-bottom: 85px;
 }
 
 .icon-row {

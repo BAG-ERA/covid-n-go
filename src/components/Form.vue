@@ -127,6 +127,7 @@ label {
   letter-spacing: 0.2em;
   margin-top: 2em;
   font-size: 1em;
+  margin-bottom: 85px;
 }
 
 /**

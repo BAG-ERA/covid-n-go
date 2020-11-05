@@ -49,7 +49,7 @@ export default {
 }
 
 #nav {
-  position: absolute;
+  position: fixed;
   bottom: 0;
   width: 100%;
   max-width: 600px;
