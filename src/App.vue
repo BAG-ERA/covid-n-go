@@ -3,7 +3,7 @@
     <div v-if="disclaimer" class="disclaimer-app">
       <div>
         <p><strong>Générateur d’attestation</strong></p>
-        <p>Cet application est gracieusement mise à disposition par la société BAG-ERA.
+        <p>Cette application est gracieusement mise à disposition par la société BAG-ERA.
           Le code source de ce générateur d’attestation est ouvert.</p>
         <p><strong>Confidentialité des données</strong></p>
         <p>Les informations saisies dans ce générateur d’attestation ne font
