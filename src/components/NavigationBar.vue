@@ -2,21 +2,21 @@
   <div class="nav-bar">
     <router-link to="/attestation">
       <div class="icon-btn" :class="{'unselected-route': isCurrentRoute('Attestation')}">
-        <img src="../assets/icon1.svg" width="25px" alt="">
+        <img src="../assets/qrcode.svg" width="25px" alt="">
         <p>Mon attestation</p>
       </div>
     </router-link>
 
     <router-link to="/generate">
       <div class="icon-btn" :class="{'unselected-route': isCurrentRoute('Generate')}">
-        <img src="../assets/icon1.svg" width="25px" alt="">
+        <img src="../assets/list.svg" width="25px" alt="">
         <p>Generer</p>
       </div>
     </router-link>
 
     <router-link to="/">
       <div class="icon-btn" :class="{'unselected-route': isCurrentRoute('Profile')}">
-        <img src="../assets/icon1.svg" width="25px" alt="">
+        <img src="../assets/user.svg" width="25px" alt="">
         <p>Profil</p>
       </div>
     </router-link>
