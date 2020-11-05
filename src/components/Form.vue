@@ -26,12 +26,13 @@
     </div>
 
     <div class="action-btn">
-      <input
+      <div
         class="form-save-btn"
         :class="{'disabled-btn': !formIsValid}"
-        type="button" @click="saveUserInfo"
-        value="SAUVEGARDER"
+        @click="saveUserInfo"
         :disabled="!formIsValid">
+        SAUVEGARDER
+      </div>
     </div>
   </div>
 </template>
@@ -79,8 +80,10 @@ export default {
   },
   methods: {
     saveUserInfo() {
-      localStorage.setItem('attestationInfo', JSON.stringify(this.data));
-      this.$router.push('Generate');
+      if (this.formIsValid) {
+        localStorage.setItem('attestationInfo', JSON.stringify(this.data));
+        this.$router.push('Generate');
+      }
     },
     getFromLocalStorage() {
       return JSON.parse(localStorage.getItem('attestationInfo'));
@@ -107,10 +110,6 @@ label {
   letter-spacing: 0.1em;
 }
 
-.disabled-btn {
-  background-color: lightgrey;
-}
-
 .action-btn {
   display: flex;
   justify-content: center;
@@ -128,6 +127,10 @@ label {
   margin-top: 2em;
   font-size: 1em;
   margin-bottom: 85px;
+}
+
+.disabled-btn {
+  background-color: lightgrey;
 }
 
 /**
