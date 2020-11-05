@@ -10,4 +10,14 @@ module.exports = {
       })
       .end();
   },
+  pwa: {
+    themeColor: '#ffffff',
+    msTileColor: '#FFFFFF',
+    manifestOptions: {
+      background_color: '#FFFFFF',
+    },
+    workboxOptions: {
+      skipWaiting: true,
+    },
+  },
 };
