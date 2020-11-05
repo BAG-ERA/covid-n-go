@@ -6,7 +6,7 @@
     </div>
     <router-view/>
     <div class="version-number">
-      v0.4
+      v0.5
     </div>
   </div>
 </template>
@@ -79,10 +79,10 @@ a {
 
 .version-number {
   position: fixed;
-  bottom: 0px;
-  right: 6px;
+  bottom: 2px;
+  right: 2px;
   font-size: 9px;
-  color: grey;
+  color: var(--color-2);
 }
 
 @media (max-width: 600px) {
