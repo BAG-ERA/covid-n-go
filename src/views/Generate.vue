@@ -105,6 +105,9 @@ export default {
       }
     },
     async generateQRCode() {
+      if (!this.formIsValid) {
+        return;
+      }
       this.motif = [];
       this.reasons.forEach((reason) => {
         if (this.isActive[reason.name]) {
