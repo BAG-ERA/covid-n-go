@@ -11,6 +11,7 @@ module.exports = {
       .end();
   },
   pwa: {
+    name: "Attest'n'go'",
     themeColor: '#ffffff',
     msTileColor: '#FFFFFF',
     manifestOptions: {
