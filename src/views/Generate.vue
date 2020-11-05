@@ -160,13 +160,14 @@ export default {
 .icon-row {
   display: flex;
   margin: 0.3em;
+  padding: 1vh;
   background: #ffffff;
   cursor: pointer;
   border: 1px solid;
   border-color: #00000009;
 }
 .active{
-  background:#00000013;
+  background:rgba(111, 207, 151, 0.4);;
 }
 
 .icon-container{
@@ -187,10 +188,10 @@ export default {
 }
 
 .generate-btn {
-  padding: 24px;
+  padding: 3vh;
   width: 100%;
-  background-color: #25e77d;
-  color: #FFFFFF;
+  background-color: var(--color-1);
+  color: var(--color-2);
   border: none;
   border-radius: 6px;
   text-align: center;

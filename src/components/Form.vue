@@ -116,7 +116,7 @@ label {
 }
 
 .form-save-btn {
-  padding: 24px;
+  padding: 3vh;
   width: 100%;
   background-color: var(--color-1);
   color: var(--color-2);

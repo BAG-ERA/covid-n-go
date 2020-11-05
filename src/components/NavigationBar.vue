@@ -54,7 +54,7 @@ export default {
 .nav-bar {
   width: 100%;
   height: 64px;
-  background: #4b79b6;
+  background: #2A4374;
   display: flex;
   justify-content: space-around;
   align-items: center;

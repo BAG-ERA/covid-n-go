@@ -24,7 +24,7 @@
     </div>
     <router-view/>
     <div class="version-number">
-      v0.9
+      v1.0
     </div>
   </div>
 </template>
@@ -66,7 +66,7 @@ export default {
 
 <style>
 :root {
-  --color-1: #25e77d;
+  --color-1: rgb(111, 207, 151);
   --color-2: #ffffff;
 }
 
