@@ -1,11 +1,11 @@
 <template>
   <div>
-    <h1>My attestation</h1>
-    <div v-if="generatedQR" class="action-btn">
+    <h1>Mon attestation</h1>
+    <div v-if="generatedQR" class="qr-code">
       <img :src="generatedQR">
-      <span>{{ QRInfo }}</span>
+      <span class="qr-code-txt">{{ QRInfo }}</span>
     </div>
-    <a @click="generatePdfCall">Ouvrir le pdf</a>
+    <div class="open-pdf" @click="generatePdfCall">Ouvrir le pdf</div>
     <a hidden ref="dw" :href='url' :download="name"></a>
   </div>
 </template>
@@ -69,7 +69,30 @@ export default {
 </script>
 
 <style scoped>
-  .super-class {
-    background: #4b79b6;
-  }
+h1 {
+  text-align: center;
+}
+
+.qr-code {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.qr-code > img {
+  width: 80%;
+}
+
+.qr-code-txt {
+  margin: 24px 0;
+}
+
+.open-pdf {
+  margin: 12px;
+  padding: 12px;
+  text-align: center;
+  color: var(--color-2);
+  background-color: var(--color-1);
+  border-radius: 6px;
+}
 </style>
