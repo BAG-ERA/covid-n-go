@@ -120,6 +120,7 @@ export default {
         .toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }).replace(':', 'h');
       this.data.datesortie = creationDate;
       this.data.heuresortie = creationHour;
+      localStorage.setItem('attestationInfo', JSON.stringify(this.data));
       const data = [
         `Cree le: ${creationDate} a ${creationHour}`,
         `Nom: ${this.data.lastname}`,
