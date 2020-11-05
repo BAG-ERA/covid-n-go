@@ -8,7 +8,7 @@
     <div class="open-pdf" @click="generatePdfCall">Ouvrir le pdf</div>
 
       <div class="made-by">
-        <p>Made with &#x2764;&#xFE0F; by <a href="https://bag-era.fr/">Bag-era - 2020</a> - Take care</p>
+        <p>Made with &#x2764;&#xFE0F; by <a href="https://bag-era.fr/" target="_blank">Bag-era - 2020</a> - Take care</p>
       </div>
 
     <a hidden ref="dw" :href='url' :download="name"></a>

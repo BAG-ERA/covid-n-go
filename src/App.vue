@@ -24,7 +24,7 @@
     </div>
     <router-view/>
     <div class="version-number">
-      v0.8
+      v0.9
     </div>
   </div>
 </template>
