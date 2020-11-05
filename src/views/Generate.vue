@@ -14,10 +14,12 @@
       </div>
     </div>
     <div class="action-btn">
-      <input
+      <div
         class="generate-btn"
-        type="button" @click="generateQRCode"
-        value="GENERATE">
+        :class="{'disabled-btn': !formIsValid}"
+        @click="generateQRCode">
+        GENERER
+      </div>
     </div>
   </div>
 </template>
@@ -35,6 +37,7 @@ export default {
       reasons,
       generatedQR: null,
       QRData: null,
+      formIsValid: false,
       motif: 'travail',
       isActive: {
         travail: false,
@@ -82,6 +85,15 @@ export default {
     if (formInfo !== null) {
       this.data = formInfo;
     }
+    this.formIsValid = this.validateForm();
+  },
+  watch: {
+    isActive: {
+      deep: true,
+      handler() {
+        this.formIsValid = this.validateForm();
+      },
+    },
   },
   methods: {
     selectMotive(reason) {
@@ -122,6 +134,13 @@ export default {
         motif: this.motif,
       }));
       this.$router.push('Attestation');
+    },
+    validateForm() {
+      let isValid = true;
+      const copyForm = { ...this.isActive };
+      const f = Object.values(copyForm);
+      isValid = f.includes(true);
+      return isValid;
     },
   },
 };
@@ -177,5 +196,9 @@ h1 {
   letter-spacing: 0.2em;
   margin-top: 2em;
   font-size: 1em;
+}
+
+.disabled-btn {
+  background-color: lightgrey;
 }
 </style>
