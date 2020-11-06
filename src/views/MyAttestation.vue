@@ -5,8 +5,9 @@
       <img :src="generatedQR">
       <span class="qr-code-txt">{{ QRInfo }}</span>
     </div>
-    <div class="open-pdf" @click="generatePdfCall">AFFICHER LE PDF</div>
-
+    <div class="action-btn">
+      <div class="open-pdf" @click="generatePdfCall">AFFICHER LE PDF</div>
+    </div>
       <div class="made-by">
         <p>Made with &#x2764;&#xFE0F; by <a href="https://bag-era.fr/" target="_blank">Bag-era - 2020</a> - Take care</p>
       </div>
@@ -78,6 +79,11 @@ h1 {
   text-align: center;
 }
 
+.action-btn {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 8px;
+}
 .qr-code {
   display: flex;
   flex-direction: column;
@@ -93,13 +99,16 @@ h1 {
 }
 
 .open-pdf {
-  margin: 12px;
   padding: 3vh;
-  text-align: center;
-  color: var(--color-2);
+  width: 100%;
   background-color: var(--color-1);
+  color: var(--color-2);
+  border: none;
   border-radius: 6px;
+  text-align: center;
   letter-spacing: 0.2em;
+  margin-top: 2em;
+  font-size: 1em;
 }
 
 .made-by {
