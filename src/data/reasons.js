@@ -3,7 +3,7 @@ const reasons = [
   {
     icon: 'work.svg',
     name: 'travail',
-    description: 'Déplacements entre le domicile et le lieu d’exercice de l’activité professionnelle ou un \
+    description: 'Déplacements entre le domicile et le lieu d’exercice de l’activité professionnele ou un \
     établissement d’enseignement ou de formation, déplacements professionnels ne pouvant être différés, \
     déplacements pour un concours ou un examen.',
     shortdescription: 'Travail ou formation. Déplacements pour un concours ou un examen.',
@@ -13,7 +13,7 @@ const reasons = [
     description: 'Déplacements pour effectuer des achats de fournitures nécessaires à l\'activité professionnelle,\
      des achats de première nécessité dans des établissements dont les activités demeurent autorisées, \
      le retrait de commande et les livraisons à domicile.',
-    shortdescription: 'Effectuer des achats professionnelles ou de première nécessité. ',
+    shortdescription: 'Effectuer des achats nécessaires à l\'activité professionnelle ou de première nécessité. ',
   }, {
     icon: 'doctor.svg',
     name: 'sante',
