@@ -92,6 +92,7 @@ h1 {
 
 .qr-code > img {
   width: 80%;
+  max-width: 400px;
 }
 
 .qr-code-txt {
