@@ -27,7 +27,7 @@
 
     <div class="action-btn">
       <div
-        class="form-save-btn"
+        class="form-save-btn unselectable-btn-text"
         :class="{'disabled-btn': !formIsValid}"
         @click="saveUserInfo"
         :disabled="!formIsValid">

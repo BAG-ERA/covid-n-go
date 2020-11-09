@@ -24,7 +24,7 @@
     </div>
     <router-view/>
     <div class="version-number">
-      v1.0
+      v1.1
     </div>
   </div>
 </template>
@@ -145,6 +145,15 @@ a {
   justify-content: center;
   border: 2px solid grey;
   border-radius: 12px;
+}
+
+.unselectable-btn-text {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 @media (max-width: 600px) {

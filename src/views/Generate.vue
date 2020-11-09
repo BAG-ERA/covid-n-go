@@ -15,7 +15,7 @@
     </div>
     <div class="action-btn">
       <div
-        class="generate-btn"
+        class="generate-btn unselectable-btn-text"
         :class="{'disabled-btn': !formIsValid}"
         @click="generateQRCode">
         GENERER
