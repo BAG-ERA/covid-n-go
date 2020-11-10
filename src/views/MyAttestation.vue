@@ -6,7 +6,12 @@
       <span class="qr-code-txt">{{ QRInfo }}</span>
     </div>
     <div class="action-btn">
-      <div class="open-pdf unselectable-btn-text" @click="generatePdfCall">AFFICHER LE PDF</div>
+      <div
+        class="open-pdf unselectable-btn-text"
+        :class="{'generating-pdf': generatingPDF}"
+        @click="generatePdfCall">
+        {{ generateBtnContent }}
+      </div>
     </div>
       <div class="made-by">
         <p>Made with &#x2764;&#xFE0F; by <a href="https://bag-era.fr/" target="_blank">Bag-era - 2020</a> - Take care</p>
@@ -30,6 +35,7 @@ export default {
       QRData: null,
       url: '',
       name: 'attestation.pdf',
+      generatingPDF: false,
       motif: [],
       data: {
         firstname: '',
@@ -49,6 +55,9 @@ export default {
       const tmp = this.QRData.split(';');
       return `${tmp[0]} ${tmp[tmp.length - 1]}`;
     },
+    generateBtnContent() {
+      return this.generatingPDF ? 'En cours ...' : 'AFFICHER LE PDF';
+    },
   },
   created() {
     const currentAtt = JSON.parse(localStorage.getItem('currentAttestation'));
@@ -64,11 +73,14 @@ export default {
   },
   methods: {
     async generatePdfCall() {
-      this.generatingPDF = true;
-      const data = await generatePdf(this.data, this.motif, pdfBase, this.generatedQR, this.QRData);
-      this.url = window.URL.createObjectURL(data);
-      this.name = `attestation_${this.data.datesortie}-${this.data.heuresortie}.pdf`;
-      setTimeout(() => { this.$refs.dw.click(); this.generatingPDF = false; }, 200);
+      if (!this.generatingPDF) {
+        this.generatingPDF = true;
+        const data = await
+        generatePdf(this.data, this.motif, pdfBase, this.generatedQR, this.QRData);
+        this.url = window.URL.createObjectURL(data);
+        this.name = `attestation_${this.data.datesortie}-${this.data.heuresortie}.pdf`;
+        setTimeout(() => { this.$refs.dw.click(); this.generatingPDF = false; }, 200);
+      }
     },
   },
 };
@@ -117,5 +129,10 @@ h1 {
   text-align: center;
   font-size: 0.8em;
   margin: 48px 0;
+}
+
+.generating-pdf {
+  background-color: #ffffff;
+  color: grey;
 }
 </style>
