@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Vous voulez :</h1>
+    <h1>Motif(s) :</h1>
     <div class="motif-section">
       <div class="icon-row"
         :class="{ 'active': isActive[reason.name] }"
@@ -64,13 +64,13 @@ export default {
       motifList: [
         'travail',
         'achats',
-        'sante',
+        'enfants',
+        'sport_animaux',
         'famille',
         'handicap',
-        'sport_animaux',
+        'sante',
         'convocation',
         'missions',
-        'enfants',
       ],
     };
   },
