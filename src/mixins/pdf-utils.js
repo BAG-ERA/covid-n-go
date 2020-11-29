@@ -2,15 +2,15 @@
 import { PDFDocument, StandardFonts } from 'pdf-lib';
 
 const ys = {
-  travail: 578,
-  achats: 533,
-  sante: 477,
-  famille: 435,
-  handicap: 396,
-  sport_animaux: 358,
-  convocation: 295,
-  missions: 255,
-  enfants: 211,
+  travail: 488,
+  achats: 417,
+  sante: 370,
+  famille: 350,
+  handicap: 315,
+  sport_animaux: 294,
+  convocation: 208,
+  missions: 178,
+  enfants: 157,
 };
 
 function getIdealFontSize(font, text, maxWidth, minSize, defaultSize) {
@@ -34,8 +34,6 @@ async function generatePdf(profile, reasons, pdfBase, qrcode, qrdata) {
     address,
     zipcode,
     city,
-    datesortie,
-    heuresortie,
   } = profile;
 
   const existingPdfBytes = await fetch(pdfBase).then((res) => res.arrayBuffer());
@@ -66,13 +64,13 @@ async function generatePdf(profile, reasons, pdfBase, qrcode, qrdata) {
     });
   };
 
-  drawText(`${firstname} ${lastname}`, 119, 696);
-  drawText(birthday, 119, 674);
-  drawText(placeofbirth, 297, 674);
-  drawText(`${address} ${zipcode} ${city}`, 133, 652);
+  drawText(`${firstname} ${lastname}`, 107, 657);
+  drawText(birthday, 107, 627);
+  drawText(placeofbirth, 240, 627);
+  drawText(`${address} ${zipcode} ${city}`, 124, 596);
 
   reasons.forEach((reason) => {
-    drawText('x', 78, ys[reason], 18);
+    drawText('x', 59, ys[reason], 18);
   });
 
   let locationSize = getIdealFontSize(font, city, 83, 7, 11);
@@ -85,26 +83,26 @@ async function generatePdf(profile, reasons, pdfBase, qrcode, qrdata) {
     locationSize = 7;
   }
 
-  drawText(city, 105, 177, locationSize);
-  drawText(`${datesortie}`, 91, 153, 11);
-  drawText(`${heuresortie}`, 264, 153, 11);
+  drawText(profile.city, 93, 122, locationSize);
+  drawText(`${profile.datesortie}`, 76, 92, 11);
+  drawText(`${profile.heuresortie}`, 246, 92, 11);
 
   // Date création
   drawText('Date de création:', 479, 120, 6);
   drawText(qrdata[0], 470, 124, 6);
   const qrImage = await pdfDoc.embedPng(qrcode);
   page1.drawImage(qrImage, {
-    x: page1.getWidth() - 156,
-    y: 100,
-    width: 92,
-    height: 92,
+    x: page1.getWidth() - 133,
+    y: 38,
+    width: 105,
+    height: 105,
   });
 
   pdfDoc.addPage();
   const page2 = pdfDoc.getPages()[1];
   page2.drawImage(qrImage, {
     x: 50,
-    y: page2.getHeight() - 350,
+    y: page2.getHeight() - 390,
     width: 300,
     height: 300,
   });
